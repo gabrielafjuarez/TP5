@@ -1,0 +1,26 @@
+---
+:source:
+  :path: test
+  :file: test_reloj.c
+:successes:
+- :test: test_hora_inicial
+  :line: 17
+  :message: ''
+  :unity_test_time: 0
+- :test: 'test_configurar_hora_actual '
+  :line: 27
+  :message: ''
+  :unity_test_time: 0
+- :test: test_pasa_un_segundo
+  :line: 35
+  :message: ''
+  :unity_test_time: 0
+:failures: []
+:ignores: []
+:counts:
+  :total: 3
+  :passed: 3
+  :failed: 0
+  :ignored: 0
+:stdout: []
+:time: 0.0020210739994581672
