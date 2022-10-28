@@ -95,3 +95,31 @@ void test_pasa_un_segundo(void){
    ), (UNITY_UINT)(43), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
 
 }
+
+
+
+
+
+void test_pasan_diez_segundos(void){
+
+    static const uint8_t ESPERADO[] = {1, 2, 3, 4, 1, 0};
+
+    uint8_t hora[6];
+
+
+
+    for(int index=0; index < 10 * 5; index++) {
+
+        NuevoTickReloj(reloj);
+
+    }
+
+    TraerHoraReloj(reloj, hora, sizeof(hora));
+
+    UnityAssertEqualIntArray(( const void*)((ESPERADO)), ( const void*)((hora)), (UNITY_UINT32)((sizeof(ESPERADO))), (
+
+   ((void *)0)
+
+   ), (UNITY_UINT)(55), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
+
+}

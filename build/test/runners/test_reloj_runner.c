@@ -13,6 +13,7 @@ extern void tearDown(void);
 extern void test_hora_inicial(void);
 extern void test_configurar_hora_actual (void);
 extern void test_pasa_un_segundo(void);
+extern void test_pasan_diez_segundos(void);
 
 
 /*=======Mock Management=====*/
@@ -83,6 +84,7 @@ int main(void)
   run_test(test_hora_inicial, "test_hora_inicial", 17);
   run_test(test_configurar_hora_actual , "test_configurar_hora_actual ", 27);
   run_test(test_pasa_un_segundo, "test_pasa_un_segundo", 35);
+  run_test(test_pasan_diez_segundos, "test_pasan_diez_segundos", 47);
 
   return UnityEnd();
 }
