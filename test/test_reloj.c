@@ -5,6 +5,14 @@
 
 reloj_t reloj;
 
+
+void simular_segundos(int segundos){
+        for(int index=0; index < segundos * TICKS_POR_SEGUNDO; index++) {
+        NuevoTickReloj(reloj);
+    }
+}
+
+
 //Creo el reloj y lo pongo en hora
 void setUp (void){
     static const uint8_t INICIAL[] = {1, 2, 3, 4};
@@ -36,9 +44,7 @@ void test_pasa_un_segundo(void){
     static const uint8_t ESPERADO[] = {1, 2, 3, 4, 0, 1};
     uint8_t hora[6];
     
-    for(int index=0; index < TICKS_POR_SEGUNDO; index++) {
-        NuevoTickReloj(reloj);
-    }
+    simular_segundos(1);
     TraerHoraReloj(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY (ESPERADO, hora, sizeof(ESPERADO));
 }
@@ -48,9 +54,7 @@ void test_pasan_diez_segundos(void){
     static const uint8_t ESPERADO[] = {1, 2, 3, 4, 1, 0};
     uint8_t hora[6];
     
-    for(int index=0; index < 10 * TICKS_POR_SEGUNDO; index++) {
-        NuevoTickReloj(reloj);
-    }
+    simular_segundos(10);
     TraerHoraReloj(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY (ESPERADO, hora, sizeof(ESPERADO));
 }
