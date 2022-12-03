@@ -14,6 +14,9 @@ extern void test_hora_inicial(void);
 extern void test_configurar_hora_actual (void);
 extern void test_pasa_un_segundo(void);
 extern void test_pasan_diez_segundos(void);
+extern void test_pasa_un_minuto(void);
+extern void test_pasan_diez_minutos(void);
+extern void test_configurar_y_obtener_alarma (void);
 
 
 /*=======Mock Management=====*/
@@ -81,10 +84,13 @@ static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE l
 int main(void)
 {
   UnityBegin("test_reloj.c");
-  run_test(test_hora_inicial, "test_hora_inicial", 17);
-  run_test(test_configurar_hora_actual , "test_configurar_hora_actual ", 27);
-  run_test(test_pasa_un_segundo, "test_pasa_un_segundo", 35);
-  run_test(test_pasan_diez_segundos, "test_pasan_diez_segundos", 47);
+  run_test(test_hora_inicial, "test_hora_inicial", 25);
+  run_test(test_configurar_hora_actual , "test_configurar_hora_actual ", 35);
+  run_test(test_pasa_un_segundo, "test_pasa_un_segundo", 43);
+  run_test(test_pasan_diez_segundos, "test_pasan_diez_segundos", 53);
+  run_test(test_pasa_un_minuto, "test_pasa_un_minuto", 64);
+  run_test(test_pasan_diez_minutos, "test_pasan_diez_minutos", 74);
+  run_test(test_configurar_y_obtener_alarma , "test_configurar_y_obtener_alarma ", 85);
 
   return UnityEnd();
 }

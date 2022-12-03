@@ -12,6 +12,22 @@ reloj_t reloj;
 
 
 
+void simular_segundos(int segundos){
+
+        for(int index=0; index < segundos * 5; index++) {
+
+        NuevoTickReloj(reloj);
+
+    }
+
+}
+
+
+
+
+
+
+
 void setUp (void){
 
     static const uint8_t INICIAL[] = {1, 2, 3, 4};
@@ -38,13 +54,13 @@ void test_hora_inicial(void){
 
 
 
-    do {if (!(TraerHoraReloj(reloj, hora, sizeof(hora)))) {} else {UnityFail( ((" Expected FALSE Was TRUE")), (UNITY_UINT)((UNITY_UINT)(22)));}} while(0);
+    do {if (!(TraerHoraReloj(reloj, hora, sizeof(hora)))) {} else {UnityFail( ((" Expected FALSE Was TRUE")), (UNITY_UINT)((UNITY_UINT)(30)));}} while(0);
 
     UnityAssertEqualIntArray(( const void*)((ESPERADO)), ( const void*)((hora)), (UNITY_UINT32)((sizeof(ESPERADO))), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(23), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
+   ), (UNITY_UINT)(31), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
 
 }
 
@@ -58,13 +74,13 @@ void test_configurar_hora_actual (void){
 
     uint8_t hora[6];
 
-    do {if ((TraerHoraReloj(reloj, hora, sizeof(hora)))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(30)));}} while(0);
+    do {if ((TraerHoraReloj(reloj, hora, sizeof(hora)))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(38)));}} while(0);
 
     UnityAssertEqualIntArray(( const void*)((ESPERADO)), ( const void*)((hora)), (UNITY_UINT32)((sizeof(ESPERADO))), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(31), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
+   ), (UNITY_UINT)(39), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
 
 }
 
@@ -80,11 +96,7 @@ void test_pasa_un_segundo(void){
 
 
 
-    for(int index=0; index < 5; index++) {
-
-        NuevoTickReloj(reloj);
-
-    }
+    simular_segundos(1);
 
     TraerHoraReloj(reloj, hora, sizeof(hora));
 
@@ -92,7 +104,7 @@ void test_pasa_un_segundo(void){
 
    ((void *)0)
 
-   ), (UNITY_UINT)(43), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
+   ), (UNITY_UINT)(49), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
 
 }
 
@@ -108,11 +120,7 @@ void test_pasan_diez_segundos(void){
 
 
 
-    for(int index=0; index < 10 * 5; index++) {
-
-        NuevoTickReloj(reloj);
-
-    }
+    simular_segundos(10);
 
     TraerHoraReloj(reloj, hora, sizeof(hora));
 
@@ -120,6 +128,82 @@ void test_pasan_diez_segundos(void){
 
    ((void *)0)
 
-   ), (UNITY_UINT)(55), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
+   ), (UNITY_UINT)(59), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
+
+}
+
+
+
+
+
+
+
+void test_pasa_un_minuto(void){
+
+    static const uint8_t ESPERADO[] = {1, 2, 3, 5, 0, 0};
+
+    uint8_t hora[6];
+
+
+
+    simular_segundos(60);
+
+    TraerHoraReloj(reloj, hora, sizeof(hora));
+
+    UnityAssertEqualIntArray(( const void*)((ESPERADO)), ( const void*)((hora)), (UNITY_UINT32)((sizeof(ESPERADO))), (
+
+   ((void *)0)
+
+   ), (UNITY_UINT)(70), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
+
+}
+
+
+
+
+
+void test_pasan_diez_minutos(void){
+
+    static const uint8_t ESPERADO[] = {1, 2, 4, 4, 0, 0};
+
+    uint8_t hora[6];
+
+
+
+    simular_segundos(10*60);
+
+    TraerHoraReloj(reloj, hora, sizeof(hora));
+
+    UnityAssertEqualIntArray(( const void*)((ESPERADO)), ( const void*)((hora)), (UNITY_UINT32)((sizeof(ESPERADO))), (
+
+   ((void *)0)
+
+   ), (UNITY_UINT)(80), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
+
+}
+
+
+
+
+
+
+
+void test_configurar_y_obtener_alarma (void){
+
+    static const uint8_t ALARMA[] = {1, 2, 3, 5};
+
+    uint8_t hora[4];
+
+
+
+    ConfigurarAlarmaReloj(reloj, ALARMA, sizeof(ALARMA));
+
+    do {if ((ObtenerAlarmaReloj(reloj, hora, sizeof(ALARMA)))) {} else {UnityFail( ((" Expected TRUE Was FALSE")), (UNITY_UINT)((UNITY_UINT)(90)));}} while(0);
+
+    UnityAssertEqualIntArray(( const void*)((ALARMA)), ( const void*)((hora)), (UNITY_UINT32)((sizeof(ALARMA))), (
+
+   ((void *)0)
+
+   ), (UNITY_UINT)(91), UNITY_DISPLAY_STYLE_UINT8, UNITY_ARRAY_TO_ARRAY);
 
 }

@@ -58,3 +58,35 @@ void test_pasan_diez_segundos(void){
     TraerHoraReloj(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY (ESPERADO, hora, sizeof(ESPERADO));
 }
+
+
+//Simular el paso de un minuto de reloj, consultar la hora y verificar que avanza un minuto
+void test_pasa_un_minuto(void){
+    static const uint8_t ESPERADO[] = {1, 2, 3, 5, 0, 0};
+    uint8_t hora[6];
+    
+    simular_segundos(60);
+    TraerHoraReloj(reloj, hora, sizeof(hora));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY (ESPERADO, hora, sizeof(ESPERADO));
+}
+
+//Simular el paso de 10 minutos de reloj, consultar la hora y verificar que avanza un minuto
+void test_pasan_diez_minutos(void){
+    static const uint8_t ESPERADO[] = {1, 2, 4, 4, 0, 0};
+    uint8_t hora[6];
+    
+    simular_segundos(10*60);//simulate minutos
+    TraerHoraReloj(reloj, hora, sizeof(hora));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY (ESPERADO, hora, sizeof(ESPERADO));
+}
+
+//6-SIMULAR LA ALARMA 
+
+void test_configurar_y_obtener_alarma (void){
+    static const uint8_t ALARMA[] = {1, 2, 3, 5};
+    uint8_t hora[4];
+
+    ConfigurarAlarmaReloj(reloj, ALARMA, sizeof(ALARMA));
+    TEST_ASSERT_TRUE(ObtenerAlarmaReloj(reloj, hora, sizeof(ALARMA)));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(ALARMA, hora, sizeof(ALARMA));
+}

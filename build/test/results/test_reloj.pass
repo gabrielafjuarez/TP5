@@ -4,27 +4,39 @@
   :file: test_reloj.c
 :successes:
 - :test: test_hora_inicial
-  :line: 17
+  :line: 25
   :message: ''
   :unity_test_time: 0
 - :test: 'test_configurar_hora_actual '
-  :line: 27
-  :message: ''
-  :unity_test_time: 0
-- :test: test_pasa_un_segundo
   :line: 35
   :message: ''
   :unity_test_time: 0
+- :test: test_pasa_un_segundo
+  :line: 43
+  :message: ''
+  :unity_test_time: 0
 - :test: test_pasan_diez_segundos
-  :line: 47
+  :line: 53
+  :message: ''
+  :unity_test_time: 0
+- :test: test_pasa_un_minuto
+  :line: 64
+  :message: ''
+  :unity_test_time: 0
+- :test: test_pasan_diez_minutos
+  :line: 74
+  :message: ''
+  :unity_test_time: 0
+- :test: 'test_configurar_y_obtener_alarma '
+  :line: 85
   :message: ''
   :unity_test_time: 0
 :failures: []
 :ignores: []
 :counts:
-  :total: 4
-  :passed: 4
+  :total: 7
+  :passed: 7
   :failed: 0
   :ignored: 0
 :stdout: []
-:time: 0.0019464240012894152
+:time: 0.0011477770003693877

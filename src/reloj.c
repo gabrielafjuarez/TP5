@@ -2,14 +2,24 @@
 #include <string.h>
 
 #define SIZE_TIEMPO 6
+#define SIZE_ALARMA 6
 #define VALOR_INICIAL 0
 #define UNIDAD_SEGUNDOS 5
+#define UNIDAD_DECENAS 4
+#define UNIDAD_MINUTOS 3
+
+#define UNIDAD_DECENA_MINUTOS 2
+#define UNIDAD_HORA 1
+#define UNIDAD_DECENA_HORAS 0
+#define MAXIMO_VALOR_UNIDADES_HORA  4
+#define MAXIMO_VALOR_DECENAS_HORA 2
 
 struct reloj_s{
     bool valida;
     uint16_t ticks_por_segundo;
     uint16_t cuenta_ticks;
     uint8_t tiempo[SIZE_TIEMPO];
+    uint8_t alarma[SIZE_ALARMA];
 };
 
 static struct reloj_s instancias;
@@ -40,7 +50,27 @@ void NuevoTickReloj(reloj_t reloj){
         reloj->tiempo[UNIDAD_SEGUNDOS]++;//los segundos estan en el 5to lugar del arreglo
         if (reloj->tiempo[UNIDAD_SEGUNDOS] == 10){
             reloj->tiempo[UNIDAD_SEGUNDOS] = 0;
-            reloj->tiempo[4]++;
+            reloj->tiempo[UNIDAD_DECENAS]++;
+            if (reloj->tiempo[UNIDAD_DECENAS] == 6){
+                reloj->tiempo[UNIDAD_DECENAS] = 0;
+                reloj->tiempo[UNIDAD_MINUTOS]++;
+                if (reloj->tiempo[UNIDAD_MINUTOS] == 10){
+                    reloj->tiempo[UNIDAD_MINUTOS] = 0;
+                    reloj->tiempo[UNIDAD_DECENA_MINUTOS]++;//FALTAN PARA LOS 24 
+                    // if (reloj->tiempo[UNIDAD_HORA] == 24){
+                    //     reloj->tiempo[UNIDAD_DECENA_HORAS] = 0;
+                    //     reloj->tiempo[UNIDAD_HORA]++;// PARA LOS 24 
+                }
+            }
         }
     }
+}
+
+void ConfigurarAlarmaReloj(reloj_t reloj, uint8_t const * const alarma, uint8_t size){
+    memcpy(reloj->alarma, alarma, size);
+}
+
+bool ObtenerAlarmaReloj(reloj_t reloj, uint8_t * alarma, uint8_t size){
+    memcpy(alarma, reloj->alarma, size);
+    return true;
 }
