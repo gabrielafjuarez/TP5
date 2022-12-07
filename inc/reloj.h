@@ -3,7 +3,9 @@
 
 typedef struct reloj_s * reloj_t;
 
-reloj_t CrearReloj(uint16_t ticks_por_segundo);
+typedef void (*evento_reloj_t)(reloj_t reloj, bool estado);
+
+reloj_t CrearReloj(uint16_t ticks_por_segundo, evento_reloj_t manejo_evento);
 
 bool TraerHoraReloj(reloj_t reloj, uint8_t * tiempo, uint8_t size);
 
