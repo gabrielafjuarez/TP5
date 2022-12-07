@@ -25,10 +25,12 @@ void setUp (void){
 void test_hora_inicial(void){
     static const uint8_t ESPERADO[] = {0, 0, 0, 0, 0, 0};
     uint8_t hora[6];
+    uint8_t alarma[4];
     reloj_t reloj = CrearReloj(TICKS_POR_SEGUNDO);
     
     TEST_ASSERT_FALSE(TraerHoraReloj(reloj, hora, sizeof(hora)));
     TEST_ASSERT_EQUAL_UINT8_ARRAY (ESPERADO, hora, sizeof(ESPERADO));
+    TEST_ASSERT_FALSE(ObtenerAlarmaReloj(reloj,alarma,sizeof(alarma)));//me aseguro que la alarma arranca en falso
 }
 
 //Configurar libreria, ajustar hora (con valores correctos), consultar hora y la hora tiene que ser valida
@@ -80,8 +82,7 @@ void test_pasan_diez_minutos(void){
     TEST_ASSERT_EQUAL_UINT8_ARRAY (ESPERADO, hora, sizeof(ESPERADO));
 }
 
-//6-SIMULAR LA ALARMA 
-
+//6-SIMULAR LA ALARMA ---guarda y activa la alarma 6 y 8
 void test_configurar_y_obtener_alarma (void){
     static const uint8_t ALARMA[] = {1, 2, 3, 5};
     uint8_t hora[4];
@@ -90,3 +91,16 @@ void test_configurar_y_obtener_alarma (void){
     TEST_ASSERT_TRUE(ObtenerAlarmaReloj(reloj, hora, sizeof(ALARMA)));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(ALARMA, hora, sizeof(ALARMA));
 }
+
+//9-deshabilitarR LA ALARMA ---guarda y activa la alarma
+void test_configurar_y_deshabilitar_alarma (void){
+    static const uint8_t ALARMA[] = {1, 2, 3, 5};
+    uint8_t hora[4];
+
+    ConfigurarAlarmaReloj(reloj, ALARMA, sizeof(ALARMA));
+    TEST_ASSERT_FALSE(CambiarAlarmaReloj(reloj));
+
+    TEST_ASSERT_FALSE(ObtenerAlarmaReloj(reloj, hora, sizeof(hora)));//cambia la bandera de tru a false y viceversa
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(ALARMA, hora, sizeof(ALARMA));
+}
+

@@ -16,6 +16,7 @@
 
 struct reloj_s{
     bool valida;
+    bool activada;
     uint16_t ticks_por_segundo;
     uint16_t cuenta_ticks;
     uint8_t tiempo[SIZE_TIEMPO];
@@ -27,6 +28,7 @@ static struct reloj_s instancias;
 //pongo la hora en cero
 reloj_t CrearReloj(uint16_t ticks_por_segundo){
     instancias.valida = false;
+    //instancias.activada = false;//ya no es necesaria xq lo defino en la creacion del reloj
     instancias.ticks_por_segundo = ticks_por_segundo;
     instancias.cuenta_ticks =0;
     memset(instancias.tiempo, VALOR_INICIAL, SIZE_TIEMPO);
@@ -68,9 +70,15 @@ void NuevoTickReloj(reloj_t reloj){
 
 void ConfigurarAlarmaReloj(reloj_t reloj, uint8_t const * const alarma, uint8_t size){
     memcpy(reloj->alarma, alarma, size);
+    reloj->activada = true;
 }
 
 bool ObtenerAlarmaReloj(reloj_t reloj, uint8_t * alarma, uint8_t size){
     memcpy(alarma, reloj->alarma, size);
-    return true;
+    return reloj->activada;
+}
+
+bool CambiarAlarmaReloj(reloj_t reloj){
+    reloj->activada = !reloj->activada;
+    return reloj->activada;
 }

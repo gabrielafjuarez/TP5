@@ -8,35 +8,39 @@
   :message: ''
   :unity_test_time: 0
 - :test: 'test_configurar_hora_actual '
-  :line: 35
+  :line: 37
   :message: ''
   :unity_test_time: 0
 - :test: test_pasa_un_segundo
-  :line: 43
+  :line: 45
   :message: ''
   :unity_test_time: 0
 - :test: test_pasan_diez_segundos
-  :line: 53
+  :line: 55
   :message: ''
   :unity_test_time: 0
 - :test: test_pasa_un_minuto
-  :line: 64
+  :line: 66
   :message: ''
   :unity_test_time: 0
 - :test: test_pasan_diez_minutos
-  :line: 74
+  :line: 76
   :message: ''
   :unity_test_time: 0
 - :test: 'test_configurar_y_obtener_alarma '
-  :line: 85
+  :line: 86
+  :message: ''
+  :unity_test_time: 0
+- :test: 'test_configurar_y_deshabilitar_alarma '
+  :line: 96
   :message: ''
   :unity_test_time: 0
 :failures: []
 :ignores: []
 :counts:
-  :total: 7
-  :passed: 7
+  :total: 8
+  :passed: 8
   :failed: 0
   :ignored: 0
 :stdout: []
-:time: 0.0011477770003693877
+:time: 0.003383832000054099
