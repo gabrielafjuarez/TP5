@@ -70,7 +70,7 @@ void NuevoTickReloj(reloj_t reloj){
         }
         bool activar = (reloj->tiempo[DECENA_SEGUNDOS] == 0) && (reloj->tiempo[UNIDAD_SEGUNDOS] == 0);
         for (int index = 0; index < SIZE_ALARMA; index++){
-            if(reloj->alarma[index]!=reloj->alarma[index]){
+            if(reloj->alarma[index]!=reloj->tiempo[index]){
                  activar = false;
                  break;
              }

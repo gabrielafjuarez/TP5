@@ -80,7 +80,24 @@ void EscribirPantallaBCD(display_t display, uint8_t * number, uint8_t size);
  */
 void RefrescarPantalla(display_t display);
 
+/**
+ * @brief Funcion para hacer parpadear algunos digitos de la pantalla
+ * 
+ * @param display       Puntero al descriptor de la pantalla con la que se quiere trabajar
+ * @param from          Posicion del primer digito que se quiere hacer parpadear
+ * @param to            Posicion del ultimo digito que se quiere hacer parpadear
+ * @param frecuencia    Factod de division de la frecuencia de refresco para el parpadeo
+ */
+void MostrarDigitosParpadeando(display_t display, uint8_t from, uint8_t to, uint16_t frecuencia);
 
+/**
+ * @brief Funcion para cambiar el estado d elos puntos de los digitos en la pantalla
+ * 
+ * @param display       Puntero al descriptor de la pantalla con la que se quiere trabajar
+ * @param from          Posicion del primer digito que se quiere cambiar el punto
+ * @param to            Posicion del ultimo digito que se quiere cambiar el punto
+ */
+void MostrarCambiosPuntos(display_t display, uint8_t from, uint8_t to);
 
 /* === Declaraciones de funciones publicas ================================= */
 

@@ -20,8 +20,12 @@
 struct display_s{
     uint8_t digits;
     uint8_t active_digit;
+    uint8_t parpadeo_from;
+    uint8_t parpadeo_to;
+    uint16_t parpadeo_frecuencia;
+    uint16_t parpadeo_cuenta;
     uint8_t memory[DISPLAY_MAX_DIGITS];//tiene que ser igual o menor que la cantidad de digitos
-    struct display_driver_s driver; 
+    struct display_driver_s driver[1]; 
 };
 
 /* === Definiciones de variables privadas ================================== */
@@ -51,16 +55,21 @@ static const uint8_t DIBUJAR [] = {
 
 display_t CrearPantalla(uint8_t digits, display_driver_t driver){
     display_t display = instances;
-
+   
     display->digits = digits;
     display->active_digit = digits - 1;
+    display->parpadeo_cuenta = 0;
+    display->parpadeo_from = 0;
+    display->parpadeo_to = 0;
+    display->parpadeo_frecuencia = 0;
+
     memset(display->memory, 0, sizeof(display->memory)); //limpiar la memoria
-    display->driver.ScreenTurnOff = driver->ScreenTurnOff;
-    display->driver.SegmentsTurnOn = driver->SegmentsTurnOn;
-    display->driver.DigitTurnOn = driver->DigitTurnOn;
+    display->driver->ScreenTurnOff = driver->ScreenTurnOff;
+    display->driver->SegmentsTurnOn = driver->SegmentsTurnOn;
+    display->driver->DigitTurnOn = driver->DigitTurnOn;
     
     //ApagarPantalla();
-    display->driver.ScreenTurnOff();
+    display->driver->ScreenTurnOff();
 
     return display;
 }
@@ -76,19 +85,53 @@ void EscribirPantallaBCD(display_t display, uint8_t * number, uint8_t size){
 
 
 void RefrescarPantalla(display_t display){
-    //ApagarPantalla();
-    display->driver.ScreenTurnOff();
+    uint8_t segmentos;
+    display->driver->ScreenTurnOff();    //ApagarPantalla();
+    display->active_digit = (display->active_digit + 1) % display->digits;
+    // if (display->active_digit == display->digits - 1) {
+    //     display->active_digit = 0;
+    // } else {
+    //     display->active_digit = display->active_digit + 1;
+    // }
+    if (display->active_digit == 0) {
+        display->parpadeo_cuenta++;
+        if (display->parpadeo_cuenta >= display->parpadeo_frecuencia){
+            display->parpadeo_cuenta = 0;
+        }
+    } 
 
-    if (display->active_digit == display->digits - 1) {
-        display->active_digit = 0;
-    } else {
-        display->active_digit = display->active_digit + 1;
+    segmentos = display->memory[display->active_digit];
+    if (display->parpadeo_frecuencia > 0){// con esto evito la division por cero de la siguiente linea
+        if (display->parpadeo_cuenta >= display->parpadeo_frecuencia / 2){
+            if ((display->active_digit >= display->parpadeo_from) && (display->active_digit <= display->parpadeo_to)){
+            segmentos = 0;
+            }
+        }
     }
-    display->driver.SegmentsTurnOn(display->memory[display->active_digit]);
-    //EscribirNumero(display->memory[display->active_digit]);
-    display->driver.DigitTurnOn(display->active_digit);
-    //SeleccionarDigito(display->active_digit);
+    display->driver->SegmentsTurnOn(segmentos);
+    //display->driver->SegmentsTurnOn(display->memory[display->active_digit]);
+    ////EscribirNumero(display->memory[display->active_digit]);
+     
+    display->driver->DigitTurnOn(display->active_digit);
+    //display->driver->DigitTurnOn(display->active_digit);
+    ////SeleccionarDigito(display->active_digit);
 }
+
+
+
+ void MostrarDigitosParpadeando(display_t display, uint8_t from, uint8_t to, uint16_t frecuencia){
+    display->parpadeo_cuenta = 0;
+    display->parpadeo_from = from;
+    display->parpadeo_to = to;
+    display->parpadeo_frecuencia = frecuencia;
+ }
+
+ void MostrarCambiosPuntos(display_t display, uint8_t from, uint8_t to){
+    for (int index = from; index <= to; index++){
+        display->memory[index] ^= ( 1 << 7 );
+    }
+ }
+
 
 /* === Ciere de documentacion ============================================== */
 

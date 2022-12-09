@@ -49,35 +49,100 @@
 
 /* === Private data type declarations ========================================================== */
 
+typedef enum {
+    HORA_SIN_AJUSTAR,
+    MOSTRANDO_HORA,
+    AJUSTANDO_MINUTOS_ACTUAL,
+    AJUSTANDO_HORAS_ACTUAL,
+    AJUSTANDO_MINUTOS_ALARMA,
+    AJUSTANDO_HORAS_ALARMA,
+
+} modo_t;
+
 /* === Private variable declarations =========================================================== */
 
 /* === Private function declarations =========================================================== */
 
 /* === Public variable definitions ============================================================= */
 
+static board_t board;
+
+static modo_t modo;
+
 /* === Private variable definitions ============================================================ */
+
+void CambiarModo(modo_t valor){
+    modo = valor;
+    switch (modo)
+    {
+    case HORA_SIN_AJUSTAR:
+        MostrarDigitosParpadeando(board->display, 0, 3, 250);
+        break;
+    case MOSTRANDO_HORA:
+        MostrarDigitosParpadeando(board->display, 0, 0, 0);
+        break;
+    case AJUSTANDO_MINUTOS_ACTUAL:
+        MostrarDigitosParpadeando(board->display, 2, 3, 250);
+        break;
+    case AJUSTANDO_HORAS_ACTUAL:
+        MostrarDigitosParpadeando(board->display, 0, 1, 250);
+        break;
+    case AJUSTANDO_MINUTOS_ALARMA:
+        MostrarDigitosParpadeando(board->display, 2, 3, 250);
+        break;
+    case AJUSTANDO_HORAS_ALARMA:
+        MostrarDigitosParpadeando(board->display, 0, 1, 250); 
+        break;
+    
+    default:
+        break;
+    }
+}
 
 /* === Private function implementation ========================================================= */
 
 /* === Public function implementation ========================================================= */
 
 int main(void) { 
+    board = BoardCreate();
 
-    uint8_t numero[4] = {1,2,3,4};
+    Sistick_Init(1000);
+    CambiarModo(HORA_SIN_AJUSTAR);
+//    MostrarDigitosParpadeando(board->display,0, 1, 250);
    
-    board_t board = BoardCreate();
-   
-    EscribirPantallaBCD(board->display, numero, sizeof(numero));
     while (true) {
-        RefrescarPantalla(board->display);
+        //RefrescarPantalla(board->display);
+        //genero interrupcion cada X segundos y evito refrescar la pantalla aqui
 
-        //for (int index = 0; index < 100; index++) {
+        if (ActivaEntradaDigital(board->aceptar)){
+            EscribirPantallaBCD(board->display, (uint8_t[]){1,2,3,4}, 4);
+            MostrarCambiosPuntos(board->display, 1, 2);
+        }
+
+        if (ActivaEntradaDigital(board->cancelar)){
+            EscribirPantallaBCD(board->display, NULL, 0);
+        }
+
+        if (ActivaEntradaDigital(board->establecer_tiempo)){
+        }
+
+        if (ActivaEntradaDigital(board->establecer_alarma)){    
+        }
+
+        if (ActivaEntradaDigital(board->decrementar)){
+        }
+
+        if (ActivaEntradaDigital(board->incrementar)){          
+        }
+
+        for (int index = 0; index < 100; index++) {
             for (int delay = 0; delay < 2500; delay++) {
                 __asm("NOP");
             }
-        //}
+        }
     }
 }
+
 
 /* === End of documentation ==================================================================== */
 
