@@ -44,6 +44,7 @@
 #include "pantalla.h"
 #include "poncho.h"
 #include "chip.h"
+#include "reloj.h"
 
 /* === Macros definitions ====================================================================== */
 
@@ -68,6 +69,8 @@ typedef enum {
 static board_t board;
 
 static modo_t modo;
+
+static reloj_t reloj;
 
 /* === Private variable definitions ============================================================ */
 
@@ -99,14 +102,18 @@ void CambiarModo(modo_t valor){
     }
 }
 
+//void SonalAlarma(reloj_t){
+//tengo que definir de que manera suena o enciende el led
+//}
 /* === Private function implementation ========================================================= */
 
 /* === Public function implementation ========================================================= */
 
 int main(void) { 
     board = BoardCreate();
+    //reloj = CrearReloj(1000, SonalAlarma);
 
-    Sistick_Init(1000);
+    SisTick_Init(1000);
     CambiarModo(HORA_SIN_AJUSTAR);
 //    MostrarDigitosParpadeando(board->display,0, 1, 250);
    
@@ -115,7 +122,7 @@ int main(void) {
         //genero interrupcion cada X segundos y evito refrescar la pantalla aqui
 
         if (ActivaEntradaDigital(board->aceptar)){
-            EscribirPantallaBCD(board->display, (uint8_t[]){1,2,3,4}, 4);
+            EscribirPantallaBCD(board->display, (uint8_t[]){1, 2, 3, 4}, 4);
             MostrarCambiosPuntos(board->display, 1, 2);
         }
 
@@ -143,7 +150,10 @@ int main(void) {
     }
 }
 
-
+void SysTick_Handler(void){
+    RefrescarPantalla(board->display);
+    NuevoTickReloj(reloj);
+}
 /* === End of documentation ==================================================================== */
 
 /** @} End of module definition for doxygen */

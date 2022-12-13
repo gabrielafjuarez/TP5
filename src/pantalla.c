@@ -63,6 +63,7 @@ display_t CrearPantalla(uint8_t digits, display_driver_t driver){
     display->parpadeo_to = 0;
     display->parpadeo_frecuencia = 0;
 
+    memcpy(display->driver, driver, sizeof(display->driver));
     memset(display->memory, 0, sizeof(display->memory)); //limpiar la memoria
     display->driver->ScreenTurnOff = driver->ScreenTurnOff;
     display->driver->SegmentsTurnOn = driver->SegmentsTurnOn;

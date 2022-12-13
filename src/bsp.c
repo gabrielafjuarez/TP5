@@ -33,7 +33,7 @@ static void InicializarSegmentos(void);
 static void InicializarZumbador(void);
 static void InicializarTeclas(void);
 
-static void DisplayInit(void);
+//static void DisplayInit(void);
 static void ApagarPantalla(void);
 static void EscribirNumero(uint8_t segmentos);
 static void SeleccionarDigito(uint8_t digito);
@@ -125,14 +125,14 @@ void InicializarTeclas(void){
 }
 
 
-void DisplayInit(void){
-    static const struct display_driver_s display_driver = {
-        .ScreenTurnOff = ApagarPantalla,
-        .SegmentsTurnOn = EscribirNumero,
-        .DigitTurnOn = SeleccionarDigito,
-    };
-    board.display = CrearPantalla(4, &display_driver);
-}
+// void DisplayInit(void){
+//     static const struct display_driver_s display_driver = {
+//         .ScreenTurnOff = ApagarPantalla,
+//         .SegmentsTurnOn = EscribirNumero,
+//         .DigitTurnOn = SeleccionarDigito,
+//     };
+//     board.display = CrearPantalla(4, &display_driver);
+// }
 
 
 //apagar pantalla
@@ -143,7 +143,7 @@ void ApagarPantalla(void){
 }
 
 void EscribirNumero(uint8_t segmentos){
-    Chip_GPIO_SetValue(LPC_GPIO_PORT, SEGMENTS_GPIO, segmentos);
+    Chip_GPIO_SetValue(LPC_GPIO_PORT, SEGMENTS_GPIO, (segmentos) & SEGMENTS_MASK);
     Chip_GPIO_SetPinState(LPC_GPIO_PORT,SEGMENT_P_GPIO, SEGMENT_P_BIT, (segmentos & SEGMENT_P));
 }
 
@@ -170,11 +170,11 @@ board_t BoardCreate(void){
     return &board;
 }
 
-void Sistick_Init(uint16_t ticks){
+void SisTick_Init(uint16_t ticks){
     __asm volatile("cpsid i");//deshabilita las interrupciones
 
     /*Activo SysTick*/
-    SystemCoreClockUpdate();//frecuencia en la que ejecuta el procesador
+    SystemCoreClockUpdate();//obtiene la frecuencia en la que ejecuta el procesador
     SysTick_Config(SystemCoreClock/ticks);//digo que cuente una cantidad (x) de nros
 
     /*Prioridad de actualizacion de SysTick*/
